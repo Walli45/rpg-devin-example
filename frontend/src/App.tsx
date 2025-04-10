@@ -17,10 +17,21 @@ interface User {
   stats: UserStats;
 }
 
+interface Task {
+  id: string;
+  name: string;
+  completed: boolean;
+}
+
 function App() {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [tasks, setTasks] = useState<Task[]>([
+    { id: '1', name: 'Clean', completed: false },
+    { id: '2', name: 'Work', completed: false },
+    { id: '3', name: 'Study', completed: false },
+  ])
 
   useEffect(() => {
     const getUsers = async () => {
@@ -38,6 +49,10 @@ function App() {
 
     getUsers()
   }, [])
+
+  const handleTaskComplete = (taskId: string) => {
+    setTasks(tasks.filter(task => task.id !== taskId))
+  }
 
   return (
     <div className="app-container">
@@ -90,11 +105,28 @@ function App() {
             </div>
           </div>
           
-          {/* Right Pane - Empty Content Area */}
+          {/* Right Pane - Task Section */}
           <div className="right-pane">
-            {/* Empty Panel for Future Content */}
-            <div className="empty-panel">
-              {/* This panel is intentionally left empty for future content */}
+            <div className="task-section">
+              <h3>Tasks</h3>
+              <div className="task-list">
+                {tasks.length === 0 ? (
+                  <p className="no-tasks-message">No tasks remaining</p>
+                ) : (
+                  tasks.map(task => (
+                    <div key={task.id} className="task-item">
+                      <label className="task-label">
+                        <input 
+                          type="checkbox" 
+                          className="task-checkbox" 
+                          onChange={() => handleTaskComplete(task.id)}
+                        />
+                        <span className="task-name">{task.name}</span>
+                      </label>
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
           </div>
         </div>
