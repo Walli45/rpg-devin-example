@@ -1,78 +1,80 @@
+/* Base styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: #f5f5f5;
+}
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* App Container */
+.app-container {
+  width: 100%;
+  min-height: 100vh;
+  padding: 1.5rem 0;
+  box-sizing: border-box;
+}
+
+/* Loading and Error Messages */
+.loading-message,
+.error-message,
+.no-data-message {
+  text-align: center;
   padding: 2rem;
+  font-size: 1.2rem;
+}
+
+.error-message {
+  color: #e53935;
+}
+
+/* Two Column Layout */
+.two-column-layout {
+  display: flex;
+  width: 100%;
+  min-height: calc(100vh - 3rem); /* Full height minus top/bottom padding */
+  margin: 0 auto;
+  max-width: 1280px;
+}
+
+/* Left Pane - User Profile */
+.left-pane {
+  flex: 1;
+  padding: 2rem 0.5rem 2rem 2.5rem; /* More padding on left side */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f9f9f9;
+  border-radius: 8px 0 0 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-/* User Profile Styles */
-.user-profile {
-  margin: 2rem 0;
-  width: 100%;
-  text-align: left;
-}
-
-.profile-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding: 1.5rem;
-  border-radius: 8px;
-  background-color: #f5f5f5;
+/* Right Pane - Content Area */
+.right-pane {
+  flex: 2;
+  padding: 2rem 2.5rem 2rem 0.5rem; /* More padding on right side */
+  background-color: #ffffff;
+  border-radius: 0 8px 8px 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.profile-section {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
+/* Profile Picture */
 .profile-picture {
-  width: 120px;
-  height: 120px;
+  width: 180px;
+  height: 180px;
   border-radius: 8px;
   overflow: hidden;
   background-color: #ddd;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .dummy-avatar {
@@ -86,46 +88,61 @@
   font-size: 2rem;
 }
 
+/* User Info */
 .user-info {
-  flex: 1;
+  width: 100%;
+  margin-bottom: 2rem;
 }
 
 .user-info h2 {
   margin: 0 0 0.5rem 0;
   font-size: 1.5rem;
+  color: #333;
 }
 
 .user-info p {
   margin: 0;
   color: #666;
+  font-size: 0.9rem;
 }
 
-.stats-section {
-  padding: 1rem;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+/* Stats List */
+.stats-list {
+  width: 100%;
+  text-align: left;
 }
 
-.stats-section h3 {
+.stats-list h3 {
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   font-size: 1.2rem;
   color: #333;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
 }
 
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 1rem;
+.stats-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-.stat-item {
+.stats-list .stat-item {
   display: flex;
   justify-content: space-between;
-  padding: 0.5rem;
-  background-color: #f9f9f9;
+  padding: 0.75rem 1rem;
+  background-color: #f0f0f0;
   border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s ease;
+}
+
+.stats-list .stat-item:hover {
+  background-color: #e8e8e8;
 }
 
 .stat-label {
@@ -138,12 +155,14 @@
   font-weight: bold;
 }
 
+/* Empty Panel */
 .empty-panel {
-  min-height: 200px;
+  width: 100%;
+  height: 100%;
+  min-height: calc(100vh - 4rem); /* Full height minus padding */
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-top: 1rem;
   border: 2px dashed #ddd;
   display: flex;
   align-items: center;
