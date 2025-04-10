@@ -1,6 +1,10 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-import psycopg
+from sqlalchemy.orm import Session
+from typing import List, Dict
+
+from .database import init_db, get_db, User as DBUser
+from .models import User
 
 app = FastAPI()
 
@@ -13,6 +17,15 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
+@app.on_event("startup")
+async def startup_event():
+    init_db()
+
 @app.get("/healthz")
 async def healthz():
     return {"status": "ok"}
+
+@app.get("/api/users", response_model=List[Dict])
+async def get_users(db: Session = Depends(get_db)):
+    users = db.query(DBUser).all()
+    return [user.to_dict() for user in users]
