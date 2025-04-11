@@ -1,34 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react'
 import './App.css'
+import { TaskForm } from './components/TaskForm'
+import { TaskList } from './components/TaskList'
+
+interface Task {
+  id: string;
+  title: string;
+  description?: string;
+  status: string;
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const fetchTasks = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/tasks');
+      if (response.ok) {
+        const data = await response.json();
+        setTasks(data);
+      }
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+    }
+  };
+
+  const handleTaskCreated = (newTask: Task) => {
+    setTasks([...tasks, newTask]);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="container mx-auto py-8 px-4 max-w-2xl">
+      <h1 className="text-2xl font-bold mb-6">Task Manager</h1>
+      <div className="mb-6">
+        <TaskForm onTaskCreated={handleTaskCreated} />
       </div>
-      <h1>Hello World</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      <h2 className="text-xl font-semibold mb-4">Your Tasks</h2>
+      <TaskList tasks={tasks} />
+    </div>
   )
 }
 
