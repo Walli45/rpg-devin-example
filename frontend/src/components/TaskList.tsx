@@ -1,5 +1,6 @@
-import * as React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
 
 interface Task {
   id: string;
@@ -10,12 +11,29 @@ interface Task {
 
 interface TaskListProps {
   tasks: Task[];
+  onDeleteTask: (taskId: string) => void;
 }
 
-export function TaskList({ tasks }: TaskListProps) {
+export function TaskList({ tasks, onDeleteTask }: TaskListProps) {
   if (tasks.length === 0) {
     return <p className="text-zinc-500">No tasks yet. Create one to get started!</p>;
   }
+
+  const handleDelete = async (taskId: string) => {
+    try {
+      const response = await fetch(`http://localhost:8000/tasks/${taskId}`, {
+        method: 'DELETE',
+      });
+      
+      if (response.ok) {
+        onDeleteTask(taskId);
+      } else {
+        console.error('Failed to delete task');
+      }
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -32,6 +50,17 @@ export function TaskList({ tasks }: TaskListProps) {
               </span>
             </div>
           </CardContent>
+          <CardFooter className="pt-0 flex justify-end">
+            <Button 
+              variant="destructive" 
+              size="sm" 
+              onClick={() => handleDelete(task.id)}
+              className="text-xs"
+            >
+              <Trash2 className="h-4 w-4 mr-1" />
+              Delete
+            </Button>
+          </CardFooter>
         </Card>
       ))}
     </div>

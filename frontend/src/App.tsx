@@ -33,6 +33,10 @@ function App() {
     setTasks([...tasks, newTask]);
   };
 
+  const handleDeleteTask = (taskId: string) => {
+    setTasks(tasks.filter(task => task.id !== taskId));
+  };
+
   return (
     <div className="container mx-auto py-8 px-4 max-w-2xl">
       <h1 className="text-2xl font-bold mb-6">Task Manager</h1>
@@ -40,7 +44,7 @@ function App() {
         <TaskForm onTaskCreated={handleTaskCreated} />
       </div>
       <h2 className="text-xl font-semibold mb-4">Your Tasks</h2>
-      <TaskList tasks={tasks} />
+      <TaskList tasks={tasks} onDeleteTask={handleDeleteTask} />
     </div>
   )
 }

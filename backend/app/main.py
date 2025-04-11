@@ -38,3 +38,10 @@ async def create_task(task: Task):
 @app.get("/tasks", response_model=List[Task])
 async def get_tasks():
     return list(tasks_db.values())
+
+@app.delete("/tasks/{task_id}")
+async def delete_task(task_id: str):
+    if task_id in tasks_db:
+        del tasks_db[task_id]
+        return {"message": f"Task {task_id} deleted successfully"}
+    return {"message": f"Task {task_id} not found"}
